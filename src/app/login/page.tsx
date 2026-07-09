@@ -17,7 +17,12 @@ async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     redirect: false,
   });
 
-  console.log(result);
+  if (result?.ok) {
+    window.location.href = "/";
+    return;
+  }
+
+  console.log("Invalid credentials");
 }
 
 export default function LoginPage() {
