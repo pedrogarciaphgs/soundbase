@@ -1,3 +1,4 @@
+import { LogoutButton } from "@/components/dashboard/LogoutButton";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -22,10 +23,16 @@ export default async function DashboardPage() {
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
+
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Dashboard
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+              Dashboard
+            </h1>
+
+            <LogoutButton />
+          </div>
+
           <p className="mt-1 text-sm text-slate-500">
             Visão geral da sua conta
           </p>
