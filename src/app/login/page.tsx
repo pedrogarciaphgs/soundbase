@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setLoading(true);
@@ -16,6 +16,12 @@ export default function LoginPage() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
+
+    if (typeof email !== "string" || typeof password !== "string") {
+      setError("Preencha email e senha");
+      setLoading(false);
+      return;
+    }
 
     const result = await signIn("credentials", {
       email,
@@ -38,9 +44,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Cabeçalho */}
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-lg font-semibold text-white">
-            ?
-          </div>
+          <img
+            src="/soundbase-icon.png"
+            alt="Soundbase"
+            className="center py-5
+            "
+          />
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
             Entrar
           </h1>
