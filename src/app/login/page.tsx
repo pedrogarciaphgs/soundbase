@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type React from "react";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -44,12 +45,16 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Cabeçalho */}
         <div className="mb-6 text-center">
-          <img
+          <Image
             src="/soundbase-icon.png"
-            alt="Soundbase"
-            className="center py-5
-            "
+            alt="Logo Soundbase"
+            width={56}
+            height={56}
+            className="mx-auto mb-4 rounded-2xl"
           />
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+            SoundBase
+          </p>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
             Entrar
           </h1>
@@ -58,7 +63,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card do formulário */}
+        {/* Card do formulario */}
         <form
           onSubmit={handleSubmit}
           className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
@@ -81,7 +86,7 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              placeholder="voce@exemplo.com"
+              placeholder="exemplo@soundbase.com"
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
             />
           </div>
