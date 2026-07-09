@@ -13,10 +13,12 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: ${DATABASE_URL_DOCKER}
+      WATCHPACK_POLLING: "true"
 
     depends_on:
       - postgres
-
+    
+    
   postgres:
     image: postgres:17-alpine
     container_name: soundbase-postgres
