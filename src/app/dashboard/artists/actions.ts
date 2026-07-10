@@ -1,8 +1,6 @@
 "use server";
 
-import { mkdir, writeFile } from "fs/promises";
-import crypto from "crypto";
-import path from "path";
+import { saveArtistImage } from "@/utils/saveArtistImage";
 import { MusicGenre, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -49,28 +47,16 @@ export async function createArtistAction(formData: FormData) {
   let finalImageUrl: string | undefined;
 
   if (imageFile instanceof File && imageFile.size > 0) {
-    const allowedTypes = ["image/png", "image/jpeg"];
+    const savedImage = await saveArtistImage(imageFile);
 
-    if (!allowedTypes.includes(imageFile.type)) {
+    if (!savedImage.success) {
       return {
         success: false,
-        message: "A imagem deve ser PNG ou JPEG",
+        message: savedImage.message,
       };
     }
 
-    const extension = imageFile.type === "image/png" ? "png" : "jpg";
-    const fileName = `${crypto.randomUUID()}.${extension}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "artists");
-    await mkdir(uploadDir, { recursive: true });
-
-    const bytes = await imageFile.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const filePath = path.join(uploadDir, fileName);
-    await writeFile(filePath, buffer);
-
-    finalImageUrl = `/uploads/artists/${fileName}`;
+    finalImageUrl = savedImage.imageUrl;
   }
 
   try {
@@ -134,30 +120,17 @@ export async function updateArtistAction(formData: FormData) {
   const imageFile = formData.get("imageFile");
 
   let finalImageUrl: string | undefined;
-
   if (imageFile instanceof File && imageFile.size > 0) {
-    const allowedTypes = ["image/png", "image/jpeg"];
+    const savedImage = await saveArtistImage(imageFile);
 
-    if (!allowedTypes.includes(imageFile.type)) {
+    if (!savedImage.success) {
       return {
         success: false,
-        message: "A imagem deve ser PNG ou JPEG",
+        message: savedImage.message,
       };
     }
 
-    const extension = imageFile.type === "image/png" ? "png" : "jpg";
-    const fileName = `${crypto.randomUUID()}.${extension}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "artists");
-    await mkdir(uploadDir, { recursive: true });
-
-    const bytes = await imageFile.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const filePath = path.join(uploadDir, fileName);
-    await writeFile(filePath, buffer);
-
-    finalImageUrl = `/uploads/artists/${fileName}`;
+    finalImageUrl = savedImage.imageUrl;
   }
 
   try {
