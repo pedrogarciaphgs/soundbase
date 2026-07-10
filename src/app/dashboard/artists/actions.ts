@@ -1,5 +1,7 @@
 "use server";
-
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
+import crypto from "crypto";
 import { createArtist } from "@/services/artistService";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -31,9 +33,37 @@ export async function createArtistAction(formData: FormData) {
     };
   }
 
+  const imageFile = formData.get("imageFile");
+  let finalImageUrl = result.data.imageUrl;
+
+  if (imageFile instanceof File && imageFile.size > 0) {
+    const allowedTypes = ["image/png", "image/jpeg"];
+
+    if (!allowedTypes.includes(imageFile.type)) {
+      return {
+        success: false,
+        message: "A imagem deve ser PNG ou JPEG",
+      };
+    }
+
+    const extension = imageFile.type === "image/png" ? "png" : "jpg";
+    const fileName = `${crypto.randomUUID()}.${extension}`;
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "artists");
+    await mkdir(uploadDir, { recursive: true });
+
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const filePath = path.join(uploadDir, fileName);
+    await writeFile(filePath, buffer);
+
+    finalImageUrl = `/uploads/artists/${fileName}`;
+  }
+
   await createArtist({
     name: result.data.name,
-    imageUrl: result.data.imageUrl,
+    imageUrl: finalImageUrl,
   });
 
   revalidatePath("/dashboard/artists");
