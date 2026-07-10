@@ -6,28 +6,7 @@ import { EditArtistButton } from "@/components/artists/EditArtistButtton";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-
-function formatGenre(genre: string | null) {
-  const genres: Record<string, string> = {
-    POP: "Pop",
-    ROCK: "Rock",
-    HIP_HOP: "Hip Hop",
-    RAP: "Rap",
-    TRAP: "Trap",
-    ELECTRONIC: "Eletrônica",
-    FUNK: "Funk",
-    SERTANEJO: "Sertanejo",
-    MPB: "MPB",
-    REGGAETON: "Reggaeton",
-    OTHER: "Outro",
-  };
-
-  if (!genre) {
-    return "Sem gênero";
-  }
-
-  return genres[genre] ?? genre;
-}
+import { formatGenre } from "@/constants/musicGenres";
 
 export default async function ArtistsPage() {
   const session = await getServerSession(authOptions);

@@ -2,6 +2,7 @@
 import toast from "react-hot-toast";
 import { createArtistAction } from "@/app/dashboard/artists/actions";
 import { useState } from "react";
+import { MUSIC_GENRES } from "@/constants/musicGenres";
 
 export function CreateArtistButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,17 +77,11 @@ export function CreateArtistButton() {
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
                 >
                   <option value="">Selecione um gênero</option>
-                  <option value="POP">Pop</option>
-                  <option value="ROCK">Rock</option>
-                  <option value="HIP_HOP">Hip Hop</option>
-                  <option value="RAP">Rap</option>
-                  <option value="TRAP">Trap</option>
-                  <option value="ELECTRONIC">Eletrônica</option>
-                  <option value="FUNK">Funk</option>
-                  <option value="SERTANEJO">Sertanejo</option>
-                  <option value="MPB">MPB</option>
-                  <option value="REGGAETON">Reggaeton</option>
-                  <option value="OTHER">Outro</option>
+                  {MUSIC_GENRES.map((genre) => (
+                    <option key={genre.value} value={genre.value}>
+                      {genre.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
