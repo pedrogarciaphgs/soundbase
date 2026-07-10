@@ -4,10 +4,17 @@ import path from "path";
 import crypto from "crypto";
 import { createArtist } from "@/services/artistService";
 import { deleteArtist } from "@/services/artistService";
+import { updateArtist } from "@/services/artistService";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 const createArtistSchema = z.object({
+  name: z.string().trim().min(1, "Nome do artista é obrigatório"),
+});
+
+const updateArtistSchema = z.object({
+  id: z.string().min(1, "Artista inválido"),
   name: z.string().trim().min(1, "Nome do artista é obrigatório"),
 
   imageUrl: z.preprocess((value) => {
@@ -22,7 +29,6 @@ const createArtistSchema = z.object({
 export async function createArtistAction(formData: FormData) {
   const rawData = {
     name: formData.get("name"),
-    imageUrl: formData.get("imageUrl"),
   };
 
   const result = createArtistSchema.safeParse(rawData);
@@ -35,7 +41,8 @@ export async function createArtistAction(formData: FormData) {
   }
 
   const imageFile = formData.get("imageFile");
-  let finalImageUrl = result.data.imageUrl;
+
+  let finalImageUrl: string | undefined;
 
   if (imageFile instanceof File && imageFile.size > 0) {
     const allowedTypes = ["image/png", "image/jpeg"];
@@ -62,17 +69,34 @@ export async function createArtistAction(formData: FormData) {
     finalImageUrl = `/uploads/artists/${fileName}`;
   }
 
-  await createArtist({
-    name: result.data.name,
-    imageUrl: finalImageUrl,
-  });
+  try {
+    await createArtist({
+      name: result.data.name,
+      imageUrl: finalImageUrl,
+    });
 
-  revalidatePath("/dashboard/artists");
+    revalidatePath("/dashboard/artists");
 
-  return {
-    success: true,
-    message: "Artista criado com sucesso",
-  };
+    return {
+      success: true,
+      message: "Artista criado com sucesso",
+    };
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return {
+        success: false,
+        message: "Já existe um artista com esse nome",
+      };
+    }
+
+    return {
+      success: false,
+      message: "Erro ao criar artista",
+    };
+  }
 }
 
 export async function deleteArtistAction(id: string) {
@@ -83,5 +107,35 @@ export async function deleteArtistAction(id: string) {
   return {
     success: true,
     message: "Artista excluído com sucesso",
+  };
+}
+
+export async function updateArtistAction(formData: FormData) {
+  const rawData = {
+    id: formData.get("id"),
+    name: formData.get("name"),
+    imageUrl: formData.get("imageUrl"),
+  };
+
+  const result = updateArtistSchema.safeParse(rawData);
+
+  if (!result.success) {
+    return {
+      success: false,
+      message: result.error.issues[0]?.message ?? "Dados inválidos",
+    };
+  }
+
+  await updateArtist({
+    id: result.data.id,
+    name: result.data.name,
+    imageUrl: result.data.imageUrl,
+  });
+
+  revalidatePath("/dashboard/artist");
+
+  return {
+    success: true,
+    message: "Artista atualizado com sucesso",
   };
 }

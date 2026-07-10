@@ -2,6 +2,7 @@ import { CreateArtistButton } from "@/components/artists/CreateArtistButton";
 import { authOptions } from "@/lib/auth";
 import { getArtists } from "@/services/artistService";
 import { DeleteArtistButton } from "@/components/artists/DeleteArtistButton";
+import { EditArtistButton } from "@/components/artists/EditArtistButtton";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -70,12 +71,7 @@ export default async function ArtistsPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
-                    >
-                      Editar
-                    </button>
+                    <EditArtistButton artist={artist} />
 
                     <DeleteArtistButton
                       artistId={artist.id}
