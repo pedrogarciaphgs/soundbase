@@ -27,13 +27,13 @@ export function CreateArtistButton() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+        className="rounded-xl bg-slate-900  px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
       >
         Novo artista
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
             <div className="mb-5">
               <h2 className="text-lg font-semibold text-slate-900">

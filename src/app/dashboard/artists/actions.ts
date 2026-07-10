@@ -3,6 +3,7 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import { createArtist } from "@/services/artistService";
+import { deleteArtist } from "@/services/artistService";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -71,5 +72,16 @@ export async function createArtistAction(formData: FormData) {
   return {
     success: true,
     message: "Artista criado com sucesso",
+  };
+}
+
+export async function deleteArtistAction(id: string) {
+  await deleteArtist(id);
+
+  revalidatePath("/dashboard/artists");
+
+  return {
+    success: true,
+    message: "Artista excluído com sucesso",
   };
 }

@@ -15,6 +15,16 @@ export async function createArtist(data: creatArtistInput) {
   return artist;
 }
 
+export async function deleteArtist(id: string) {
+  const artist = await prisma.artist.delete({
+    where: {
+      id,
+    },
+  });
+
+  return artist;
+}
+
 export async function getArtists() {
   const artists = await prisma.artist.findMany({
     orderBy: {
