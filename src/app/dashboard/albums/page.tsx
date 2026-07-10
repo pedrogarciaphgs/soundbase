@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getArtists } from "@/services/artistService";
 import { CreateAlbumButton } from "@/components/albums/CreateAlbumButton";
+import Image from "next/image";
 
 export default async function AlbumsPage() {
   const session = await getServerSession(authOptions);
@@ -36,11 +37,37 @@ export default async function AlbumsPage() {
           ) : (
             <ul className="divide-y divide-slate-100">
               {albums.map((album) => (
-                <li key={album.id} className="p-5">
-                  <p className="text-sm font-medium text-slate-900">
-                    {album.title}
-                  </p>
-                  <p className="text-xs text-slate-400">{album.artist.name}</p>
+                <li key={album.id} className="flex items-center gap-4 p-5">
+                  <div className="h-16 w-16 overflow-hidden rounded-xl bg-slate-100">
+                    {album.coverUrl ? (
+                      <Image
+                        src={album.coverUrl}
+                        alt={album.title}
+                        width={64}
+                        height={64}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-slate-400">
+                        sem capa
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">
+                      {album.title}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      {album.artist.name}
+                    </p>
+
+                    {album.releaseYear && (
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        {album.releaseYear}
+                      </p>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

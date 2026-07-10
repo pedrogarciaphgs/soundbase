@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { createAlbumAction } from "@/app/dashboard/albums/actions";
+import toast from "react-hot-toast";
 
 type CreateAlbumButtonProps = {
   artists: {
@@ -11,7 +13,26 @@ type CreateAlbumButtonProps = {
 
 export function CreateAlbumButton({ artists }: CreateAlbumButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const result = await createAlbumAction(formData);
+
+    setLoading(false);
+
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success(result.message);
+    setIsOpen(false);
+  }
   return (
     <>
       <button
@@ -34,7 +55,7 @@ export function CreateAlbumButton({ artists }: CreateAlbumButtonProps) {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label
                   htmlFor="title"
@@ -89,6 +110,22 @@ export function CreateAlbumButton({ artists }: CreateAlbumButtonProps) {
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
                 />
               </div>
+              <div>
+                <label
+                  htmlFor="coverFile"
+                  className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                >
+                  Capa do álbum
+                </label>
+
+                <input
+                  id="coverFile"
+                  name="coverFile"
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition file:mr-4 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-slate-800 focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                />
+              </div>
 
               <div className="flex justify-end gap-3 pt-2">
                 <button
@@ -101,9 +138,10 @@ export function CreateAlbumButton({ artists }: CreateAlbumButtonProps) {
 
                 <button
                   type="submit"
+                  disabled={loading}
                   className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
                 >
-                  Salvar
+                  {loading ? "Salvando..." : "Salvar"}
                 </button>
               </div>
             </form>
