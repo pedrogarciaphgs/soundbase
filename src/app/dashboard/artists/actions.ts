@@ -1,34 +1,38 @@
 "use server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+
+import { mkdir, writeFile } from "fs/promises";
 import crypto from "crypto";
-import { createArtist } from "@/services/artistService";
-import { deleteArtist } from "@/services/artistService";
-import { updateArtist } from "@/services/artistService";
+import path from "path";
+import { MusicGenre, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { Prisma } from "@prisma/client";
+
+import {
+  createArtist,
+  deleteArtist,
+  updateArtist,
+} from "@/services/artistService";
+
+const genreSchema = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.nativeEnum(MusicGenre).optional()
+);
 
 const createArtistSchema = z.object({
   name: z.string().trim().min(1, "Nome do artista é obrigatório"),
+  genre: genreSchema,
 });
 
 const updateArtistSchema = z.object({
   id: z.string().min(1, "Artista inválido"),
   name: z.string().trim().min(1, "Nome do artista é obrigatório"),
-
-  imageUrl: z.preprocess((value) => {
-    if (typeof value !== "string") return undefined;
-
-    const trimmedValue = value.trim();
-
-    return trimmedValue === "" ? undefined : trimmedValue;
-  }, z.url("URL da imagem inválida").optional()),
+  genre: genreSchema,
 });
 
 export async function createArtistAction(formData: FormData) {
   const rawData = {
     name: formData.get("name"),
+    genre: formData.get("genre"),
   };
 
   const result = createArtistSchema.safeParse(rawData);
@@ -72,6 +76,7 @@ export async function createArtistAction(formData: FormData) {
   try {
     await createArtist({
       name: result.data.name,
+      genre: result.data.genre,
       imageUrl: finalImageUrl,
     });
 
@@ -114,7 +119,7 @@ export async function updateArtistAction(formData: FormData) {
   const rawData = {
     id: formData.get("id"),
     name: formData.get("name"),
-    imageUrl: formData.get("imageUrl"),
+    genre: formData.get("genre"),
   };
 
   const result = updateArtistSchema.safeParse(rawData);
@@ -126,16 +131,33 @@ export async function updateArtistAction(formData: FormData) {
     };
   }
 
-  await updateArtist({
-    id: result.data.id,
-    name: result.data.name,
-    imageUrl: result.data.imageUrl,
-  });
+  try {
+    await updateArtist({
+      id: result.data.id,
+      name: result.data.name,
+      genre: result.data.genre,
+    });
 
-  revalidatePath("/dashboard/artist");
+    revalidatePath("/dashboard/artists");
 
-  return {
-    success: true,
-    message: "Artista atualizado com sucesso",
-  };
+    return {
+      success: true,
+      message: "Artista atualizado com sucesso",
+    };
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return {
+        success: false,
+        message: "Já existe um artista com esse nome",
+      };
+    }
+
+    return {
+      success: false,
+      message: "Erro ao atualizar artista",
+    };
+  }
 }

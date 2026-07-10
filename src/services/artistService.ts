@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { MusicGenre } from "@prisma/client";
 
 type CreatArtistInput = {
   name: string;
+  genre?: MusicGenre;
   imageUrl?: string;
 };
 
@@ -9,6 +11,7 @@ type UpdateArtistInput = {
   id: string;
   name: string;
   imageUrl?: string;
+  genre?: MusicGenre;
 };
 export async function createArtist(data: CreatArtistInput) {
   const normalizedName = data.name.trim().toLowerCase();
@@ -17,6 +20,7 @@ export async function createArtist(data: CreatArtistInput) {
     data: {
       name: data.name.trim(),
       normalizedName,
+      genre: data.genre,
       imageUrl: data.imageUrl,
     },
   });
@@ -53,6 +57,7 @@ export async function updateArtist(data: UpdateArtistInput) {
     },
     data: {
       name: data.name.trim(),
+      genre: data.genre,
       normalizedName,
     },
   });

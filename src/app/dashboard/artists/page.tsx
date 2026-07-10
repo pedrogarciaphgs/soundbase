@@ -7,6 +7,28 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
+function formatGenre(genre: string | null) {
+  const genres: Record<string, string> = {
+    POP: "Pop",
+    ROCK: "Rock",
+    HIP_HOP: "Hip Hop",
+    RAP: "Rap",
+    TRAP: "Trap",
+    ELECTRONIC: "Eletrônica",
+    FUNK: "Funk",
+    SERTANEJO: "Sertanejo",
+    MPB: "MPB",
+    REGGAETON: "Reggaeton",
+    OTHER: "Outro",
+  };
+
+  if (!genre) {
+    return "Sem gênero";
+  }
+
+  return genres[genre] ?? genre;
+}
+
 export default async function ArtistsPage() {
   const session = await getServerSession(authOptions);
 
@@ -66,7 +88,9 @@ export default async function ArtistsPage() {
                       <p className="text-sm font-medium text-slate-900">
                         {artist.name}
                       </p>
-                      <p className="text-xs text-slate-400">Artista</p>
+                      <p className="text-xs text-slate-400">
+                        {formatGenre(artist.genre)}
+                      </p>
                     </div>
                   </div>
 

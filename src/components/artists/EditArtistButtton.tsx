@@ -9,6 +9,7 @@ type EditArtistButtonProps = {
   artist: {
     id: string;
     name: string;
+    genre: string | null;
     imageUrl: string | null;
   };
 };
@@ -72,7 +73,34 @@ export function EditArtistButton({ artist }: EditArtistButtonProps) {
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
                 />
               </div>
+              <div>
+                <label
+                  htmlFor={`genre-${artist.id}`}
+                  className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                >
+                  Gênero musical
+                </label>
 
+                <select
+                  id={`genre-${artist.id}`}
+                  name="genre"
+                  defaultValue={artist.genre ?? ""}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                >
+                  <option value="">Selecione um gênero</option>
+                  <option value="POP">Pop</option>
+                  <option value="ROCK">Rock</option>
+                  <option value="HIP_HOP">Hip Hop</option>
+                  <option value="RAP">Rap</option>
+                  <option value="TRAP">Trap</option>
+                  <option value="ELECTRONIC">Eletrônica</option>
+                  <option value="FUNK">Funk</option>
+                  <option value="SERTANEJO">Sertanejo</option>
+                  <option value="MPB">MPB</option>
+                  <option value="REGGAETON">Reggaeton</option>
+                  <option value="OTHER">Outro</option>
+                </select>
+              </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"

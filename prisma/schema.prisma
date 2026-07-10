@@ -12,6 +12,20 @@ enum Role {
   ADMIN
 }
 
+enum MusicGenre {
+  POP
+  ROCK
+  HIP_HOP
+  RAP
+  TRAP
+  ELECTRONIC
+  FUNK
+  SERTANEJO
+  MPB
+  REGGAETON
+  OTHER
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -23,13 +37,14 @@ model User {
 }
 
 model Artist {
-  id             String   @id @default(cuid())
-  name           String   @unique
-  normalizedName String   @unique
+  id             String      @id @default(cuid())
+  name           String      @unique
+  normalizedName String      @unique
+  genre          MusicGenre?
   imageUrl       String?
   albums         Album[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }
 
 model Album {
