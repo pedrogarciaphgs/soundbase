@@ -14,3 +14,13 @@ export async function CreatArtist(data: creatArtistInput) {
   });
   return artist;
 }
+
+export async function getArtists() {
+  const artists = await prisma.artist.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return artists;
+}
