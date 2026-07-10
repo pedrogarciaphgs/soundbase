@@ -1,5 +1,7 @@
 "use server";
 
+import { createArtist } from "@/services/artistService";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const createArtistSchema = z.object({
@@ -29,10 +31,15 @@ export async function createArtistAction(formData: FormData) {
     };
   }
 
-  console.log(result.data);
+  await createArtist({
+    name: result.data.name,
+    imageUrl: result.data.imageUrl,
+  });
+
+  revalidatePath("/dashboard/artists");
 
   return {
     success: true,
-    message: "Dados válidos",
+    message: "Artista criado com sucesso",
   };
 }

@@ -5,7 +5,7 @@ type creatArtistInput = {
   imageUrl?: string;
 };
 
-export async function CreatArtist(data: creatArtistInput) {
+export async function createArtist(data: creatArtistInput) {
   const artist = await prisma.artist.create({
     data: {
       name: data.name,
