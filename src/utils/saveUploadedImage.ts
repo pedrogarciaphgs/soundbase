@@ -2,7 +2,9 @@ import { mkdir, writeFile } from "fs/promises";
 import crypto from "crypto";
 import path from "path";
 
-export async function saveArtistImage(file: File) {
+type UploadFolder = "artists" | "albums" | "sons/covers";
+
+export async function saveUploadedImage(file: File, folder: UploadFolder) {
   const allowedTypes = ["image/png", "image/jpeg"];
 
   if (!allowedTypes.includes(file.type)) {
@@ -16,7 +18,7 @@ export async function saveArtistImage(file: File) {
   const extension = file.type === "image/png" ? "png" : "jpg";
   const fileName = `${crypto.randomUUID()}.${extension}`;
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "artists");
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
   await mkdir(uploadDir, { recursive: true });
 
   const bytes = await file.arrayBuffer();
@@ -28,6 +30,6 @@ export async function saveArtistImage(file: File) {
   return {
     success: true,
     message: "Imagem salva com sucesso",
-    imageUrl: `/uploads/artists/${fileName}`,
+    imageUrl: `/uploads/${folder}/${fileName}`,
   };
 }

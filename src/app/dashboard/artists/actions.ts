@@ -1,6 +1,6 @@
 "use server";
 
-import { saveArtistImage } from "@/utils/saveArtistImage";
+import { saveUploadedImage } from "@/utils/saveUploadedImage";
 import { MusicGenre, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -47,7 +47,7 @@ export async function createArtistAction(formData: FormData) {
   let finalImageUrl: string | undefined;
 
   if (imageFile instanceof File && imageFile.size > 0) {
-    const savedImage = await saveArtistImage(imageFile);
+    const savedImage = await saveUploadedImage(imageFile, "artists");
 
     if (!savedImage.success) {
       return {
@@ -121,7 +121,7 @@ export async function updateArtistAction(formData: FormData) {
 
   let finalImageUrl: string | undefined;
   if (imageFile instanceof File && imageFile.size > 0) {
-    const savedImage = await saveArtistImage(imageFile);
+    const savedImage = await saveUploadedImage(imageFile, "artists");
 
     if (!savedImage.success) {
       return {
