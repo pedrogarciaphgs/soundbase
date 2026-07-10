@@ -98,6 +98,26 @@ export function EditArtistButton({ artist }: EditArtistButtonProps) {
                   ))}
                 </select>
               </div>
+              <div>
+                <label
+                  htmlFor={`imageFile-${artist.id}`}
+                  className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                >
+                  Nova imagem
+                </label>
+
+                <input
+                  id={`imageFile-${artist.id}`}
+                  name="imageFile"
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition file:mr-4 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-800"
+                />
+
+                <p className="mt-1 text-xs text-slate-400">
+                  Envie uma nova imagem apenas se quiser substituir a atual.
+                </p>
+              </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"

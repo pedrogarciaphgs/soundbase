@@ -10,8 +10,8 @@ type CreatArtistInput = {
 type UpdateArtistInput = {
   id: string;
   name: string;
-  imageUrl?: string;
   genre?: MusicGenre;
+  imageUrl?: string;
 };
 export async function createArtist(data: CreatArtistInput) {
   const normalizedName = data.name.trim().toLowerCase();
@@ -57,8 +57,9 @@ export async function updateArtist(data: UpdateArtistInput) {
     },
     data: {
       name: data.name.trim(),
-      genre: data.genre,
       normalizedName,
+      genre: data.genre,
+      ...(data.imageUrl && { imageUrl: data.imageUrl }),
     },
   });
 

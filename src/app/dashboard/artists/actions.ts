@@ -131,11 +131,41 @@ export async function updateArtistAction(formData: FormData) {
     };
   }
 
+  const imageFile = formData.get("imageFile");
+
+  let finalImageUrl: string | undefined;
+
+  if (imageFile instanceof File && imageFile.size > 0) {
+    const allowedTypes = ["image/png", "image/jpeg"];
+
+    if (!allowedTypes.includes(imageFile.type)) {
+      return {
+        success: false,
+        message: "A imagem deve ser PNG ou JPEG",
+      };
+    }
+
+    const extension = imageFile.type === "image/png" ? "png" : "jpg";
+    const fileName = `${crypto.randomUUID()}.${extension}`;
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "artists");
+    await mkdir(uploadDir, { recursive: true });
+
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const filePath = path.join(uploadDir, fileName);
+    await writeFile(filePath, buffer);
+
+    finalImageUrl = `/uploads/artists/${fileName}`;
+  }
+
   try {
     await updateArtist({
       id: result.data.id,
       name: result.data.name,
       genre: result.data.genre,
+      imageUrl: finalImageUrl,
     });
 
     revalidatePath("/dashboard/artists");
