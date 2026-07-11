@@ -56,3 +56,13 @@ export async function updateAlbum(data: UpdateAlbumInput) {
 
   return album;
 }
+
+export async function deleteAlbum(id: string) {
+  const album = await prisma.album.delete({
+    where: {
+      id,
+    },
+  });
+
+  return album;
+}

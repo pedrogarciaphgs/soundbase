@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-import { createAlbum, updateAlbum } from "@/services/albumService";
+import { createAlbum, deleteAlbum, updateAlbum } from "@/services/albumService";
 import { saveUploadedImage } from "@/utils/saveUploadedImage";
 
 const createAlbumSchema = z.object({
@@ -154,6 +154,23 @@ export async function updateAlbumAction(formData: FormData) {
     return {
       success: false,
       message: "Erro ao atualizar álbum",
+    };
+  }
+}
+export async function deleteAlbumAction(id: string) {
+  try {
+    await deleteAlbum(id);
+
+    revalidatePath("/dashboard/albums");
+
+    return {
+      success: true,
+      message: "Álbum excluído com sucesso",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Erro ao excluir álbum",
     };
   }
 }

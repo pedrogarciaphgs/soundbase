@@ -6,6 +6,7 @@ import { getArtists } from "@/services/artistService";
 import { CreateAlbumButton } from "@/components/albums/CreateAlbumButton";
 import Image from "next/image";
 import { EditAlbumButton } from "@/components/albums/EditAlbumButton";
+import { DeleteAlbumButton } from "@/components/albums/DeleteAlbumButton";
 
 export default async function AlbumsPage() {
   const session = await getServerSession(authOptions);
@@ -75,15 +76,22 @@ export default async function AlbumsPage() {
                     </div>
                   </div>
 
-                  <EditAlbumButton
-                    album={{
-                      id: album.id,
-                      title: album.title,
-                      artistId: album.artistId,
-                      releaseYear: album.releaseYear,
-                    }}
-                    artists={artists}
-                  />
+                  <div className="flex items-center gap-2">
+                    <EditAlbumButton
+                      album={{
+                        id: album.id,
+                        title: album.title,
+                        artistId: album.artistId,
+                        releaseYear: album.releaseYear,
+                      }}
+                      artists={artists}
+                    />
+
+                    <DeleteAlbumButton
+                      albumId={album.id}
+                      albumTitle={album.title}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
