@@ -66,6 +66,7 @@ model Song {
   title     String
   duration  Int
   audioUrl  String
+  coverUrl  String?
   albumId   String
   album     Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())

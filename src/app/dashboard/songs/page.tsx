@@ -1,0 +1,90 @@
+import { authOptions } from "@/lib/auth";
+import { getSongs } from "@/services/songService";
+import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { getAlbums } from "@/services/albumService";
+import { CreateSongButton } from "@/components/songs/CreateSongButton";
+import { SongPlayer } from "@/components/songs/SongPlayer";
+
+export default async function SongsPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  const [songs, albums] = await Promise.all([getSongs(), getAlbums()]);
+
+  return (
+    <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+              Músicas
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Gerencie as músicas cadastradas.
+            </p>
+          </div>
+          <CreateSongButton albums={albums} />
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+          {songs.length === 0 ? (
+            <p className="p-6 text-sm text-slate-500">
+              Nenhuma música cadastrada ainda.
+            </p>
+          ) : (
+            <ul className="divide-y divide-slate-100">
+              {songs.map((song) => {
+                const coverUrl = song.coverUrl ?? song.album.coverUrl;
+
+                return (
+                  <li
+                    key={song.id}
+                    className="flex items-center justify-between gap-4 p-5"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="h-16 w-16 overflow-hidden rounded-xl bg-slate-100">
+                        {coverUrl ? (
+                          <Image
+                            src={coverUrl}
+                            alt={song.title}
+                            width={64}
+                            height={64}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-slate-400">
+                            sem capa
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">
+                          {song.title}
+                        </p>
+
+                        <p className="text-xs text-slate-400">
+                          {song.album.title} • {song.album.artist.name}
+                        </p>
+
+                        <SongPlayer
+                          audioUrl={song.audioUrl}
+                          duration={song.duration}
+                        />
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

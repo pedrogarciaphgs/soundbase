@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import crypto from "crypto";
 import path from "path";
 
-type UploadFolder = "artists" | "albums" | "sons/covers";
+type UploadFolder = "artists" | "albums" | "songs/covers";
 
 export async function saveUploadedImage(file: File, folder: UploadFolder) {
   const allowedTypes = ["image/png", "image/jpeg"];
