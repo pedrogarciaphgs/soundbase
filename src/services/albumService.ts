@@ -7,6 +7,14 @@ type CreateAlbumInput = {
   artistId: string;
 };
 
+type UpdateAlbumInput = {
+  id: string;
+  title: string;
+  coverUrl?: string;
+  releaseYear?: number;
+  artistId: string;
+};
+
 export async function createAlbum(data: CreateAlbumInput) {
   const album = await prisma.album.create({
     data: {
@@ -31,4 +39,20 @@ export async function getAlbums() {
   });
 
   return albums;
+}
+
+export async function updateAlbum(data: UpdateAlbumInput) {
+  const album = await prisma.album.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      title: data.title.trim(),
+      artistId: data.artistId,
+      releaseYear: data.releaseYear,
+      ...(data.coverUrl && { coverUrl: data.coverUrl }),
+    },
+  });
+
+  return album;
 }
