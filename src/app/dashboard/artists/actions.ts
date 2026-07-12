@@ -10,6 +10,7 @@ import {
   deleteArtist,
   updateArtist,
 } from "@/services/artistService";
+import { requireAdmin } from "@/utils/requireAdmin";
 
 const genreSchema = z.preprocess(
   (value) => (value === "" ? undefined : value),
@@ -28,6 +29,8 @@ const updateArtistSchema = z.object({
 });
 
 export async function createArtistAction(formData: FormData) {
+  await requireAdmin();
+
   const rawData = {
     name: formData.get("name"),
     genre: formData.get("genre"),
@@ -91,6 +94,7 @@ export async function createArtistAction(formData: FormData) {
 }
 
 export async function deleteArtistAction(id: string) {
+  await requireAdmin();
   await deleteArtist(id);
 
   revalidatePath("/dashboard/artists");
@@ -102,6 +106,7 @@ export async function deleteArtistAction(id: string) {
 }
 
 export async function updateArtistAction(formData: FormData) {
+  await requireAdmin();
   const rawData = {
     id: formData.get("id"),
     name: formData.get("name"),

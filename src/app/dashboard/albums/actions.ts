@@ -3,7 +3,7 @@
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
+import { requireAdmin } from "@/utils/requireAdmin";
 import { createAlbum, deleteAlbum, updateAlbum } from "@/services/albumService";
 import { saveUploadedImage } from "@/utils/saveUploadedImage";
 
@@ -27,6 +27,7 @@ const updateAlbumSchema = z.object({
 });
 
 export async function createAlbumAction(formData: FormData) {
+  await requireAdmin();
   const rawData = {
     title: formData.get("title"),
     artistId: formData.get("artistId"),
@@ -92,6 +93,7 @@ export async function createAlbumAction(formData: FormData) {
   }
 }
 export async function updateAlbumAction(formData: FormData) {
+  await requireAdmin();
   const rawData = {
     id: formData.get("id"),
     title: formData.get("title"),
@@ -158,6 +160,8 @@ export async function updateAlbumAction(formData: FormData) {
   }
 }
 export async function deleteAlbumAction(id: string) {
+  await requireAdmin();
+
   try {
     await deleteAlbum(id);
 

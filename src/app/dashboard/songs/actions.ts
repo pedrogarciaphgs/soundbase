@@ -6,6 +6,7 @@ import { z } from "zod";
 import { createSong, deleteSong, updateSong } from "@/services/songService";
 import { saveUploadedAudio } from "@/utils/saveUploadedAudio";
 import { saveUploadedImage } from "@/utils/saveUploadedImage";
+import { requireAdmin } from "@/utils/requireAdmin";
 
 const createSongSchema = z.object({
   title: z.string().trim().min(1, "Título da música é obrigatório"),
@@ -27,6 +28,7 @@ const updateSongSchema = z.object({
 });
 
 export async function createSongAction(formData: FormData) {
+  await requireAdmin();
   const rawData = {
     title: formData.get("title"),
     albumId: formData.get("albumId"),
@@ -111,6 +113,7 @@ export async function createSongAction(formData: FormData) {
 }
 
 export async function updateSongAction(formData: FormData) {
+  await requireAdmin();
   const rawData = {
     id: formData.get("id"),
     title: formData.get("title"),
@@ -195,6 +198,7 @@ export async function updateSongAction(formData: FormData) {
   }
 }
 export async function deleteSongAction(id: string) {
+  await requireAdmin();
   try {
     await deleteSong(id);
 
