@@ -1,7 +1,4 @@
-import { authOptions } from "@/lib/auth";
 import { getAlbums } from "@/services/albumService";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { getArtists } from "@/services/artistService";
 import { CreateAlbumButton } from "@/components/albums/CreateAlbumButton";
 import Image from "next/image";
@@ -9,12 +6,9 @@ import { EditAlbumButton } from "@/components/albums/EditAlbumButton";
 import { DeleteAlbumButton } from "@/components/albums/DeleteAlbumButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
+import { requireAdmin } from "@/utils/requireAdmin";
 export default async function AlbumsPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/login");
-  }
+  const session = await requireAdmin();
 
   const [albums, artists] = await Promise.all([getAlbums(), getArtists()]);
   return (

@@ -1,8 +1,5 @@
-import { authOptions } from "@/lib/auth";
 import { getSongs } from "@/services/songService";
 import Image from "next/image";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { getAlbums } from "@/services/albumService";
 import { CreateSongButton } from "@/components/songs/CreateSongButton";
 import { SongPlayer } from "@/components/songs/SongPlayer";
@@ -10,14 +7,10 @@ import { EditSongButton } from "@/components/songs/EditSongButton";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
+import { requireAdmin } from "@/utils/requireAdmin";
 
 export default async function SongsPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/login");
-  }
-
+  const session = await requireAdmin();
   const [songs, albums] = await Promise.all([getSongs(), getAlbums()]);
 
   return (

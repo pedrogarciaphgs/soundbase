@@ -1,22 +1,15 @@
 import { CreateArtistButton } from "@/components/artists/CreateArtistButton";
-import { authOptions } from "@/lib/auth";
 import { getArtists } from "@/services/artistService";
 import { DeleteArtistButton } from "@/components/artists/DeleteArtistButton";
 import { EditArtistButton } from "@/components/artists/EditArtistButtton";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import Image from "next/image";
 import { formatGenre } from "@/constants/musicGenres";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
+import { requireAdmin } from "@/utils/requireAdmin";
 
 export default async function ArtistsPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/login");
-  }
-
+  const session = await requireAdmin();
   const artists = await getArtists();
 
   return (
