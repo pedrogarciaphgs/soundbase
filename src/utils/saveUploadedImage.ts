@@ -15,7 +15,18 @@ export async function saveUploadedImage(file: File, folder: UploadFolder) {
     };
   }
 
+  const maxSizeInBytes = 5 * 1024 * 1024;
+
+  if (file.size > maxSizeInBytes) {
+    return {
+      success: false,
+      message: "A imagem deve ter no máximo 5MB",
+      imageUrl: undefined,
+    };
+  }
+
   const extension = file.type === "image/png" ? "png" : "jpg";
+
   const fileName = `${crypto.randomUUID()}.${extension}`;
 
   const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
