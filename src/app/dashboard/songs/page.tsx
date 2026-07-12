@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getAlbums } from "@/services/albumService";
 import { CreateSongButton } from "@/components/songs/CreateSongButton";
 import { SongPlayer } from "@/components/songs/SongPlayer";
+import { EditSongButton } from "@/components/songs/EditSongButton";
 
 export default async function SongsPage() {
   const session = await getServerSession(authOptions);
@@ -78,6 +79,15 @@ export default async function SongsPage() {
                         />
                       </div>
                     </div>
+                    <EditSongButton
+                      song={{
+                        id: song.id,
+                        title: song.title,
+                        albumId: song.albumId,
+                        duration: song.duration,
+                      }}
+                      albums={albums}
+                    />
                   </li>
                 );
               })}
