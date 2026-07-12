@@ -3,7 +3,7 @@
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { createSong, updateSong } from "@/services/songService";
+import { createSong, deleteSong, updateSong } from "@/services/songService";
 import { saveUploadedAudio } from "@/utils/saveUploadedAudio";
 import { saveUploadedImage } from "@/utils/saveUploadedImage";
 
@@ -191,6 +191,23 @@ export async function updateSongAction(formData: FormData) {
     return {
       success: false,
       message: "Erro ao atualizar música",
+    };
+  }
+}
+export async function deleteSongAction(id: string) {
+  try {
+    await deleteSong(id);
+
+    revalidatePath("/dashboard/songs");
+
+    return {
+      success: true,
+      message: "Música excluída com sucesso",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Erro ao excluir música",
     };
   }
 }

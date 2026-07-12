@@ -64,3 +64,13 @@ export async function getSongs() {
 
   return songs;
 }
+
+export async function deleteSong(id: string) {
+  const song = await prisma.song.delete({
+    where: {
+      id,
+    },
+  });
+
+  return song;
+}

@@ -7,6 +7,7 @@ import { getAlbums } from "@/services/albumService";
 import { CreateSongButton } from "@/components/songs/CreateSongButton";
 import { SongPlayer } from "@/components/songs/SongPlayer";
 import { EditSongButton } from "@/components/songs/EditSongButton";
+import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
 
 export default async function SongsPage() {
   const session = await getServerSession(authOptions);
@@ -79,15 +80,22 @@ export default async function SongsPage() {
                         />
                       </div>
                     </div>
-                    <EditSongButton
-                      song={{
-                        id: song.id,
-                        title: song.title,
-                        albumId: song.albumId,
-                        duration: song.duration,
-                      }}
-                      albums={albums}
-                    />
+                    <div className="flex items-center gap-2">
+                      <EditSongButton
+                        song={{
+                          id: song.id,
+                          title: song.title,
+                          albumId: song.albumId,
+                          duration: song.duration,
+                        }}
+                        albums={albums}
+                      />
+
+                      <DeleteSongButton
+                        songId={song.id}
+                        songTitle={song.title}
+                      />
+                    </div>
                   </li>
                 );
               })}
