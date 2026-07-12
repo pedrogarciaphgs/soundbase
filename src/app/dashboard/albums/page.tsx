@@ -7,7 +7,7 @@ import { CreateAlbumButton } from "@/components/albums/CreateAlbumButton";
 import Image from "next/image";
 import { EditAlbumButton } from "@/components/albums/EditAlbumButton";
 import { DeleteAlbumButton } from "@/components/albums/DeleteAlbumButton";
-
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 export default async function AlbumsPage() {
   const session = await getServerSession(authOptions);
 
@@ -18,17 +18,11 @@ export default async function AlbumsPage() {
   const [albums, artists] = await Promise.all([getAlbums(), getArtists()]);
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Álbuns
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Gerencie os álbuns cadastrados.
-          </p>
-        </div>
-        <CreateAlbumButton artists={artists} />
-      </div>
+      <DashboardPageHeader
+        title="Álbuns"
+        description="Gerencie os álbuns cadastrados."
+        action={<CreateAlbumButton artists={artists} />}
+      />
 
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
         {albums.length === 0 ? (

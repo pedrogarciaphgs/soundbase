@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { formatGenre } from "@/constants/musicGenres";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 
 export default async function ArtistsPage() {
   const session = await getServerSession(authOptions);
@@ -19,19 +20,11 @@ export default async function ArtistsPage() {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Artistas
-          </h1>
-
-          <p className="mt-1 text-sm text-slate-500">
-            Gerencie os artistas cadastrados.
-          </p>
-        </div>
-
-        <CreateArtistButton />
-      </div>
+      <DashboardPageHeader
+        title="Artistas"
+        description="Gerencie os artistas cadastrados."
+        action={<CreateArtistButton />}
+      />
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
         {artists.length === 0 ? (

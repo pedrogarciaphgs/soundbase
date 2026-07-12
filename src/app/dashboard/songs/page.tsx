@@ -8,6 +8,7 @@ import { CreateSongButton } from "@/components/songs/CreateSongButton";
 import { SongPlayer } from "@/components/songs/SongPlayer";
 import { EditSongButton } from "@/components/songs/EditSongButton";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 
 export default async function SongsPage() {
   const session = await getServerSession(authOptions);
@@ -20,17 +21,11 @@ export default async function SongsPage() {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Músicas
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Gerencie as músicas cadastradas.
-          </p>
-        </div>
-        <CreateSongButton albums={albums} />
-      </div>
+      <DashboardPageHeader
+        title="Músicas"
+        description="Gerencie as músicas cadastradas."
+        action={<CreateSongButton albums={albums} />}
+      />
 
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
         {songs.length === 0 ? (
