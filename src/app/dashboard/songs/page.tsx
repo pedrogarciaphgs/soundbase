@@ -8,6 +8,7 @@ import { CreateSongButton } from "@/components/songs/CreateSongButton";
 import { SongPlayer } from "@/components/songs/SongPlayer";
 import { EditSongButton } from "@/components/songs/EditSongButton";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
+import { DashboardNav } from "@/components/dashboard/DashboardNav";
 
 export default async function SongsPage() {
   const session = await getServerSession(authOptions);
@@ -21,6 +22,7 @@ export default async function SongsPage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-4xl">
+        <DashboardNav />
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
