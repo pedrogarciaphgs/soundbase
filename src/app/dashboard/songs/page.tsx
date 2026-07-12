@@ -9,6 +9,7 @@ import { SongPlayer } from "@/components/songs/SongPlayer";
 import { EditSongButton } from "@/components/songs/EditSongButton";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { DashboardCard } from "@/components/dashboard/DashboardCard";
 
 export default async function SongsPage() {
   const session = await getServerSession(authOptions);
@@ -27,7 +28,7 @@ export default async function SongsPage() {
         action={<CreateSongButton albums={albums} />}
       />
 
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <DashboardCard>
         {songs.length === 0 ? (
           <p className="p-6 text-sm text-slate-500">
             Nenhuma música cadastrada ainda.
@@ -92,7 +93,7 @@ export default async function SongsPage() {
             })}
           </ul>
         )}
-      </div>
+      </DashboardCard>
     </>
   );
 }

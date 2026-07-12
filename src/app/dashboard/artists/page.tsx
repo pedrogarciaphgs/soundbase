@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { formatGenre } from "@/constants/musicGenres";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { DashboardCard } from "@/components/dashboard/DashboardCard";
 
 export default async function ArtistsPage() {
   const session = await getServerSession(authOptions);
@@ -26,7 +27,7 @@ export default async function ArtistsPage() {
         action={<CreateArtistButton />}
       />
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <DashboardCard>
         {artists.length === 0 ? (
           <p className="p-6 text-sm text-slate-500">
             Nenhum artista cadastrado ainda.
@@ -77,7 +78,7 @@ export default async function ArtistsPage() {
             ))}
           </ul>
         )}
-      </div>
+      </DashboardCard>
     </>
   );
 }

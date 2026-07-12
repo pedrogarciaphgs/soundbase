@@ -8,6 +8,7 @@ import Image from "next/image";
 import { EditAlbumButton } from "@/components/albums/EditAlbumButton";
 import { DeleteAlbumButton } from "@/components/albums/DeleteAlbumButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { DashboardCard } from "@/components/dashboard/DashboardCard";
 export default async function AlbumsPage() {
   const session = await getServerSession(authOptions);
 
@@ -24,7 +25,7 @@ export default async function AlbumsPage() {
         action={<CreateAlbumButton artists={artists} />}
       />
 
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <DashboardCard>
         {albums.length === 0 ? (
           <p className="p-6 text-sm text-slate-500">
             Nenhum álbum cadastrado ainda.
@@ -89,7 +90,7 @@ export default async function AlbumsPage() {
             ))}
           </ul>
         )}
-      </div>
+      </DashboardCard>
     </>
   );
 }
