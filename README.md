@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SoundBase
 
-## Getting Started
+SoundBase é um backoffice musical desenvolvido por Pedro Henrique Garcia com Next.js, Prisma, PostgreSQL, Docker e NextAuth.
 
-First, run the development server:
+O projeto permite gerenciar artistas, álbuns e músicas em um painel administrativo protegido por autenticação e controle de acesso por role.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tecnologias
+
+- Next.js 15
+- React 19
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- Docker
+- NextAuth
+- Tailwind CSS
+- Zod
+- React Hot Toast
+
+## Funcionalidades
+
+- Login com NextAuth Credentials
+- Proteção de rotas administrativas por role `ADMIN`
+- Dashboard com estatísticas
+- CRUD de artistas
+- CRUD de álbuns
+- CRUD de músicas
+- Upload local de imagens
+- Upload local de áudio
+- Player de áudio no backoffice
+- Validação de formulários com Zod
+- Feedback visual com toast
+- Seed de usuário admin e dados demo
+
+## Estrutura principal
+
+```txt
+src/
+  app/
+    dashboard/
+      artists/
+      albums/
+      songs/
+  components/
+    artists/
+    albums/
+    songs/
+    dashboard/
+  lib/
+  services/
+  utils/
+prisma/
+  schema.prisma
+  seed.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como executar o projeto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Clonar o repositório
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+git clone git@github.com:pedrogarciaphgs/soundbase.git
+cd soundbase
+```
 
-## Learn More
+### 2. Criar o arquivo `.env`
 
-To learn more about Next.js, take a look at the following resources:
+Copie o arquivo de exemplo:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cp .env.example .env
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+No Windows PowerShell:
 
-## Deploy on Vercel
+```bash
+Copy-Item .env.example .env
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Depois edite o `.env` com suas credenciais locais.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Importante: não commite o arquivo `.env` real. Use apenas o `.env.example` como referência.
+
+### 3. Subir o projeto com Docker
+
+```bash
+docker compose up --build
+```
+
+A aplicação ficará disponível em:
+
+```txt
+http://localhost:3000
+```
+
+### 4. Rodar as migrations
+
+Em outro terminal, execute:
+
+```bash
+npx prisma migrate dev
+```
+
+### 5. Rodar o seed
+
+```bash
+npx prisma db seed
+```
+
+Usuário administrador demo criado pelo seed:
+
+```txt
+E-mail: garcia.admin@soundbase.com
+Senha: admin123
+```
+
+### 6. Acessar o backoffice
+
+Depois do login, acesse:
+
+```txt
+http://localhost:3000/dashboard
+```
+
+Rotas principais:
+
+```txt
+/dashboard
+/dashboard/artists
+/dashboard/albums
+/dashboard/songs
+```
+
+### 7. Abrir o Prisma Studio
+
+Para visualizar os dados do banco:
+
+```bash
+npx prisma studio
+```
+
+## Observações
+
+Os arquivos enviados pelo backoffice são armazenados localmente em:
+
+```txt
+public/uploads
+```
+
+Em produção, essa camada pode ser substituída por um serviço externo de storage como S3, Cloudinary ou R2.
+
+## Status do projeto
+
+Projeto em desenvolvimento.
+
+Próximas etapas planejadas:
+
+- Interface pública/client
+- Busca e filtros
+- Página pública de artistas
+- Página pública de álbuns
+- Página pública de músicas
+- Player público
+- Deploy
+
+## Autor
+
+Desenvolvido por Pedro Henrique Garcia.
+
+- GitHub: github.com/pedrogarciaphgs
+- LinkedIn:https://www.linkedin.com/in/pedrogarciaphgs
