@@ -3,36 +3,52 @@
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+
 import { createSong, deleteSong, updateSong } from "@/services/songService";
+import { requireAdmin } from "@/utils/requireAdmin";
 import { saveUploadedAudio } from "@/utils/saveUploadedAudio";
 import { saveUploadedImage } from "@/utils/saveUploadedImage";
-import { requireAdmin } from "@/utils/requireAdmin";
+
+const durationSchema = {
+  minutes: z.preprocess(
+    (value) => Number(value),
+    z.number().int("Minutos inválidos").min(0, "Minutos inválidos")
+  ),
+  seconds: z.preprocess(
+    (value) => Number(value),
+    z
+      .number()
+      .int("Segundos inválidos")
+      .min(0, "Segundos inválidos")
+      .max(59, "Segundos deve ser entre 0 e 59")
+  ),
+};
 
 const createSongSchema = z.object({
   title: z.string().trim().min(1, "Título da música é obrigatório"),
   albumId: z.string().min(1, "Álbum é obrigatório"),
-  duration: z.preprocess(
-    (value) => Number(value),
-    z.number().int("Duração inválida").min(1, "Duração é obrigatória")
-  ),
+  ...durationSchema,
 });
 
 const updateSongSchema = z.object({
   id: z.string().min(1, "Música inválida"),
   title: z.string().trim().min(1, "Título da música é obrigatório"),
   albumId: z.string().min(1, "Álbum é obrigatório"),
-  duration: z.preprocess(
-    (value) => Number(value),
-    z.number().int("Duração inválida").min(1, "Duração é obrigatória")
-  ),
+  ...durationSchema,
 });
+
+function calculateDuration(minutes: number, seconds: number) {
+  return minutes * 60 + seconds;
+}
 
 export async function createSongAction(formData: FormData) {
   await requireAdmin();
+
   const rawData = {
     title: formData.get("title"),
     albumId: formData.get("albumId"),
-    duration: formData.get("duration"),
+    minutes: formData.get("minutes"),
+    seconds: formData.get("seconds"),
   };
 
   const result = createSongSchema.safeParse(rawData);
@@ -41,6 +57,15 @@ export async function createSongAction(formData: FormData) {
     return {
       success: false,
       message: result.error.issues[0]?.message ?? "Dados inválidos",
+    };
+  }
+
+  const duration = calculateDuration(result.data.minutes, result.data.seconds);
+
+  if (duration < 1) {
+    return {
+      success: false,
+      message: "Duração é obrigatória",
     };
   }
 
@@ -83,7 +108,7 @@ export async function createSongAction(formData: FormData) {
     await createSong({
       title: result.data.title,
       albumId: result.data.albumId,
-      duration: result.data.duration,
+      duration,
       audioUrl: savedAudio.audioUrl!,
       coverUrl: finalCoverUrl,
     });
@@ -114,11 +139,13 @@ export async function createSongAction(formData: FormData) {
 
 export async function updateSongAction(formData: FormData) {
   await requireAdmin();
+
   const rawData = {
     id: formData.get("id"),
     title: formData.get("title"),
     albumId: formData.get("albumId"),
-    duration: formData.get("duration"),
+    minutes: formData.get("minutes"),
+    seconds: formData.get("seconds"),
   };
 
   const result = updateSongSchema.safeParse(rawData);
@@ -127,6 +154,15 @@ export async function updateSongAction(formData: FormData) {
     return {
       success: false,
       message: result.error.issues[0]?.message ?? "Dados inválidos",
+    };
+  }
+
+  const duration = calculateDuration(result.data.minutes, result.data.seconds);
+
+  if (duration < 1) {
+    return {
+      success: false,
+      message: "Duração é obrigatória",
     };
   }
 
@@ -169,7 +205,7 @@ export async function updateSongAction(formData: FormData) {
       id: result.data.id,
       title: result.data.title,
       albumId: result.data.albumId,
-      duration: result.data.duration,
+      duration,
       audioUrl: finalAudioUrl,
       coverUrl: finalCoverUrl,
     });
@@ -197,8 +233,10 @@ export async function updateSongAction(formData: FormData) {
     };
   }
 }
+
 export async function deleteSongAction(id: string) {
   await requireAdmin();
+
   try {
     await deleteSong(id);
 

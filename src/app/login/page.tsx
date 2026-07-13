@@ -4,46 +4,63 @@ import { useState } from "react";
 import type React from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { z } from "zod";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "E-mail é obrigatório")
+    .email("E-mail inválido"),
+  password: z.string().min(1, "Senha é obrigatória"),
+});
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
+
     setError(null);
     setLoading(true);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
 
-    if (typeof email !== "string" || typeof password !== "string") {
-      setError("Preencha email e senha");
+    const rawData = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    const result = loginSchema.safeParse(rawData);
+
+    if (!result.success) {
       setLoading(false);
+      toast.error(result.error.issues[0]?.message ?? "Dados inválidos");
       return;
     }
 
-    const result = await signIn("credentials", {
-      email,
-      password,
+    const response = await signIn("credentials", {
+      email: result.data.email,
+      password: result.data.password,
       redirect: false,
     });
 
     setLoading(false);
 
-    if (result?.ok) {
-      window.location.href = "/dashboard";
+    if (!response?.ok) {
+      toast.error("E-mail ou senha inválidos");
       return;
     }
 
-    setError("Email ou senha inválidos");
+    router.push("/dashboard");
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-sm">
-        {/* Cabeçalho */}
         <div className="mb-6 text-center">
           <Image
             src="/soundbase-icon.png"
@@ -63,9 +80,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card do formulario */}
         <form
           onSubmit={handleSubmit}
+          noValidate
           className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
         >
           {error && (

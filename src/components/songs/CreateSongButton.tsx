@@ -106,13 +106,42 @@ export function CreateSongButton({ albums }: CreateSongButtonProps) {
                 >
                   Duração em segundos
                 </label>
-                <input
-                  id="duration"
-                  name="duration"
-                  type="number"
-                  placeholder="Ex: 187"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label
+                      htmlFor="minutes"
+                      className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                    >
+                      Minutos
+                    </label>
+                    <input
+                      id="minutes"
+                      name="minutes"
+                      type="number"
+                      min={0}
+                      placeholder="Ex: 3"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="seconds"
+                      className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                    >
+                      Segundos
+                    </label>
+                    <input
+                      id="seconds"
+                      name="seconds"
+                      type="number"
+                      min={0}
+                      max={59}
+                      placeholder="Ex: 07"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>
