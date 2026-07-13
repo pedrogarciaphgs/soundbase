@@ -7,10 +7,8 @@ import { EditSongButton } from "@/components/songs/EditSongButton";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
-import { requireAdmin } from "@/utils/requireAdmin";
 
 export default async function SongsPage() {
-  const session = await requireAdmin();
   const [songs, albums] = await Promise.all([getSongs(), getAlbums()]);
 
   return (

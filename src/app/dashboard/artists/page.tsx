@@ -6,10 +6,8 @@ import Image from "next/image";
 import { formatGenre } from "@/constants/musicGenres";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
-import { requireAdmin } from "@/utils/requireAdmin";
 
 export default async function ArtistsPage() {
-  const session = await requireAdmin();
   const artists = await getArtists();
 
   return (

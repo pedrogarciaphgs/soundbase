@@ -30,7 +30,7 @@ export default async function DashboardPage() {
   return (
     <>
       <div className="relative mb-10 overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-16 items-end gap-[3px] opacity-[0.08]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-16 items-end gap-0.75 opacity-[0.08]">
           {Array.from({ length: 48 }).map((_, i) => (
             <span
               key={i}
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
         </h1>
 
         <p className="relative mt-1 text-sm text-slate-500">
-          Bem-vindo, {session.user.name}. Veja um resumo da SoundBase.
+          Veja um resumo da SoundBase.
         </p>
       </div>
 
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
                 {String(value).padStart(2, "0")}
               </p>
 
-              <div className="mt-4 flex gap-[3px]" aria-hidden>
+              <div className="mt-4 flex gap-0.75" aria-hidden>
                 {Array.from({ length: 12 }).map((_, i) => (
                   <span
                     key={i}
