@@ -25,22 +25,41 @@ export async function saveUploadedImage(file: File, folder: UploadFolder) {
     };
   }
 
+  const allowedExtensions = [".png", ".jpg", ".jpeg"];
+  const originalExtension = path.extname(file.name).toLowerCase();
+
+  if (!allowedExtensions.includes(originalExtension)) {
+    return {
+      success: false,
+      message: "A imagem deve ter extensão PNG, JPG ou JPEG",
+      imageUrl: undefined,
+    };
+  }
+
   const extension = file.type === "image/png" ? "png" : "jpg";
 
   const fileName = `${crypto.randomUUID()}.${extension}`;
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
-  await mkdir(uploadDir, { recursive: true });
+  try {
+    const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+    await mkdir(uploadDir, { recursive: true });
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-  const filePath = path.join(uploadDir, fileName);
-  await writeFile(filePath, buffer);
+    const filePath = path.join(uploadDir, fileName);
+    await writeFile(filePath, buffer);
 
-  return {
-    success: true,
-    message: "Imagem salva com sucesso",
-    imageUrl: `/uploads/${folder}/${fileName}`,
-  };
+    return {
+      success: true,
+      message: "Imagem salva com sucesso",
+      imageUrl: `/uploads/${folder}/${fileName}`,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Erro ao salvar imagem",
+      imageUrl: undefined,
+    };
+  }
 }
