@@ -41,3 +41,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Uploaded files
+public/uploads/artists/*
+public/uploads/albums/*
+public/uploads/songs/audio/*
+public/uploads/songs/covers/*
+
+# Keep upload folders
+!public/uploads/artists/.gitkeep
+!public/uploads/albums/.gitkeep
+!public/uploads/songs/audio/.gitkeep
+!public/uploads/songs/covers/.gitkeep
