@@ -76,6 +76,34 @@ prisma/
   seed.ts
 ```
 
+## Arquitetura
+
+O projeto segue uma separação simples entre interface, regras de aplicação e acesso ao banco.
+
+- `app/`: rotas, páginas e Server Actions do Next.js
+- `components/`: componentes reutilizáveis de interface
+- `services/`: funções responsáveis por acessar o banco com Prisma
+- `utils/`: helpers reutilizáveis, como autenticação e upload
+- `prisma/`: schema, migrations e seed do banco
+
+As páginas administrativas são protegidas por autenticação com NextAuth e validação de role `ADMIN`.
+
+As operações de criação, edição e exclusão são feitas por Server Actions, com validação usando Zod antes de persistir os dados no banco.
+
+## Uploads
+
+O projeto possui upload local para imagens e arquivos de áudio.
+
+Validações implementadas:
+
+- Imagens: PNG, JPG ou JPEG
+- Áudios: MP3, WAV ou OGG
+- Limite de imagem: 5MB
+- Limite de áudio: 20MB
+- Arquivos salvos com UUID para evitar conflito de nomes
+
+Os uploads são armazenados em `public/uploads`, mas os arquivos enviados não são versionados no Git.
+
 ## Como executar o projeto
 
 ### 1. Clonar o repositório
