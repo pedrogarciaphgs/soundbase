@@ -20,7 +20,7 @@ export default function Home() {
         </p>
 
         <Link
-          href="/login"
+          href="/dashboard"
           className="mt-6 inline-flex rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
         >
           Entrar

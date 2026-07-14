@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import type React from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const loginSchema = z.object({
   email: z
@@ -20,6 +21,20 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { status } = useSession();
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [status, router]);
+
+  if (status === "loading" || status === "authenticated") {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+        <p className="text-sm text-slate-500">Carregando...</p>
+      </main>
+    );
+  }
 
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
