@@ -1,3 +1,4 @@
+import { PublicNav } from "@/components/public/PublicNav";
 import { SongPlayer } from "@/components/songs/SongPlayer";
 import { getPublicSongById } from "@/services/publicService";
 import Image from "next/image";
@@ -28,6 +29,7 @@ export default async function SongDetailsPage({
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-4xl">
+        <PublicNav />
         <Link
           href="/"
           className="mb-6 inline-flex text-sm font-medium text-slate-500 transition hover:text-slate-900"

@@ -2,6 +2,7 @@ import { getPublicHomeData } from "@/services/publicService";
 import Image from "next/image";
 import Link from "next/link";
 import { SongPlayer } from "@/components/songs/SongPlayer";
+import { PublicNav } from "@/components/public/PublicNav";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-5xl">
+        <PublicNav />
         <header className="mb-10 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
@@ -25,27 +27,6 @@ export default async function HomePage() {
               Uma plataforma musical com artistas, álbuns e músicas gerenciados
               por um backoffice administrativo.
             </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/artists"
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-            >
-              Ver artistas
-            </Link>
-            <Link
-              href="/albums"
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-            >
-              Ver álbuns
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-            >
-              Acessar backoffice
-            </Link>
           </div>
         </header>
 

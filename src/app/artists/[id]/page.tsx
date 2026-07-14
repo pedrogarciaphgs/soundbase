@@ -1,3 +1,4 @@
+import { PublicNav } from "@/components/public/PublicNav";
 import { SongPlayer } from "@/components/songs/SongPlayer";
 import { formatGenre } from "@/constants/musicGenres";
 import { getPublicArtistById } from "@/services/publicService";
@@ -27,6 +28,7 @@ export default async function ArtistDetailsPage({
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-5xl">
+        <PublicNav />
         <Link
           href="/artists"
           className="mb-6 inline-flex text-sm font-medium text-slate-500 transition hover:text-slate-900"

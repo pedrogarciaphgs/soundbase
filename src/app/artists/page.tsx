@@ -1,3 +1,4 @@
+import { PublicNav } from "@/components/public/PublicNav";
 import { getPublicArtists } from "@/services/publicService";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +11,7 @@ export default async function PublicArtistsPage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
       <div className="mx-auto max-w-5xl">
+        <PublicNav />
         <header className="mb-10 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
