@@ -1,6 +1,7 @@
 import { getPublicHomeData } from "@/services/publicService";
 import Image from "next/image";
 import Link from "next/link";
+import { SongPlayer } from "@/components/songs/SongPlayer";
 
 export const dynamic = "force-dynamic";
 
@@ -86,11 +87,12 @@ export default async function HomePage() {
                       <p className="mt-1 text-xs text-slate-500">
                         {song.album.title} • {song.album.artist.name}
                       </p>
-
-                      <p className="mt-2 font-mono text-xs text-slate-400">
-                        {Math.floor(song.duration / 60)}:
-                        {(song.duration % 60).toString().padStart(2, "0")}
-                      </p>
+                      <div className="mt-3">
+                        <SongPlayer
+                          audioUrl={song.audioUrl}
+                          duration={song.duration}
+                        />
+                      </div>
                     </div>
                   </article>
                 );
