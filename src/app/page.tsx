@@ -61,32 +61,37 @@ export default async function HomePage() {
                 return (
                   <article
                     key={song.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
                   >
-                    <div className="aspect-square overflow-hidden rounded-xl bg-slate-100">
-                      {coverUrl ? (
-                        <Image
-                          src={coverUrl}
-                          alt={song.title}
-                          width={400}
-                          height={400}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-sm text-slate-400">
-                          Sem capa
-                        </div>
-                      )}
-                    </div>
+                    <Link href={`/songs/${song.id}`}>
+                      <div className="aspect-square overflow-hidden rounded-xl bg-slate-100">
+                        {coverUrl ? (
+                          <Image
+                            src={coverUrl}
+                            alt={song.title}
+                            width={400}
+                            height={400}
+                            className="h-full w-full object-cover transition hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-slate-400">
+                            Sem capa
+                          </div>
+                        )}
+                      </div>
+                    </Link>
 
                     <div className="mt-4">
-                      <h3 className="text-sm font-semibold text-slate-900">
-                        {song.title}
-                      </h3>
+                      <Link href={`/songs/${song.id}`}>
+                        <h3 className="text-sm font-semibold text-slate-900 transition hover:text-slate-600">
+                          {song.title}
+                        </h3>
+                      </Link>
 
                       <p className="mt-1 text-xs text-slate-500">
                         {song.album.title} • {song.album.artist.name}
                       </p>
+
                       <div className="mt-3">
                         <SongPlayer
                           audioUrl={song.audioUrl}

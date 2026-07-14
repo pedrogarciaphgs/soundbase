@@ -19,3 +19,19 @@ export async function getPublicHomeData() {
     songs,
   };
 }
+export async function getPublicSongById(id: string) {
+  const song = await prisma.song.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      album: {
+        include: {
+          artist: true,
+        },
+      },
+    },
+  });
+
+  return song;
+}
