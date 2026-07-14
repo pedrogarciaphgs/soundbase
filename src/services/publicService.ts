@@ -51,3 +51,22 @@ export async function getPublicArtists() {
 
   return artists;
 }
+export async function getPublicArtistById(id: string) {
+  const artist = await prisma.artist.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      albums: {
+        include: {
+          songs: true,
+        },
+        orderBy: {
+          releaseYear: "desc",
+        },
+      },
+    },
+  });
+
+  return artist;
+}

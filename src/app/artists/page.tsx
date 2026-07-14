@@ -48,9 +48,10 @@ export default async function PublicArtistsPage() {
               );
 
               return (
-                <article
+                <Link
                   key={artist.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+                  href={`/artists/${artist.id}`}
+                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <div className="flex items-center gap-4">
                     <div className="h-16 w-16 overflow-hidden rounded-xl bg-slate-100">
@@ -80,7 +81,7 @@ export default async function PublicArtistsPage() {
                       </p>
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>
