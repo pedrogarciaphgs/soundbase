@@ -171,7 +171,7 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
-Usuário administrador demo criado pelo seed:
+O seed cria um usuário administrador demo para acesso local:
 
 ```txt
 E-mail: garcia.admin@soundbase.com

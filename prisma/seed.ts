@@ -5,6 +5,7 @@ import { createUser } from "@/services/userService";
 
 async function seedAdmin() {
   try {
+    // Demo admin user for local development only
     const admin = await createUser({
       name: "Garcia",
       email: "garcia.admin@soundbase.com",
