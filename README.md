@@ -90,6 +90,20 @@ As páginas administrativas são protegidas por autenticação com NextAuth e va
 
 As operações de criação, edição e exclusão são feitas por Server Actions, com validação usando Zod antes de persistir os dados no banco.
 
+## Decisões técnicas
+
+- O projeto foi estruturado primeiro como um backoffice administrativo, responsável por alimentar e gerenciar os dados musicais.
+- A interface pública/client será desenvolvida posteriormente consumindo os dados cadastrados pelo painel administrativo.
+- As operações administrativas usam Server Actions do Next.js.
+- O acesso ao banco foi isolado em services, mantendo as páginas e actions mais organizadas.
+- A autenticação usa NextAuth com Credentials Provider.
+- O acesso ao backoffice é restrito a usuários com role `ADMIN`.
+- As Server Actions também validam permissão de administrador antes de criar, editar ou excluir dados.
+- Os formulários usam Zod para validação antes da persistência.
+- Os uploads são armazenados localmente em ambiente de desenvolvimento.
+- Os arquivos enviados usam UUID no nome para evitar conflitos.
+- Em produção, a camada de upload pode ser substituída por storage externo como S3, Cloudinary ou R2.
+
 ## Uploads
 
 O projeto possui upload local para imagens e arquivos de áudio.
