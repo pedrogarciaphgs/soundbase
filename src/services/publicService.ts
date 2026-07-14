@@ -35,3 +35,19 @@ export async function getPublicSongById(id: string) {
 
   return song;
 }
+export async function getPublicArtists() {
+  const artists = await prisma.artist.findMany({
+    include: {
+      albums: {
+        include: {
+          songs: true,
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return artists;
+}

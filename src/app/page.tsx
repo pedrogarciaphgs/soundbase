@@ -27,12 +27,21 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <Link
-            href="/dashboard"
-            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-          >
-            Acessar backoffice
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/artists"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              Ver artistas
+            </Link>
+
+            <Link
+              href="/dashboard"
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            >
+              Acessar backoffice
+            </Link>
+          </div>
         </header>
 
         <section>
