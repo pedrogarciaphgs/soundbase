@@ -32,6 +32,28 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 - Feedback visual com toast
 - Seed de usuário admin e dados demo
 
+## Screenshots
+
+### Login
+
+![Login](docs/screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Artistas
+
+![Artistas](docs/screenshots/artists.png)
+
+### Álbuns
+
+![Álbuns](docs/screenshots/albums.png)
+
+### Músicas
+
+![Músicas](docs/screenshots/songs.png)
+
 ## Estrutura principal
 
 ```txt
