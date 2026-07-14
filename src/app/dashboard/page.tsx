@@ -1,5 +1,4 @@
 import { getDashboardStats } from "@/services/dashboardService";
-import { requireAdmin } from "@/utils/requireAdmin";
 
 const STAT_CARDS_CONFIG = [
   { key: "artistsCount", label: "Artistas" },
@@ -17,8 +16,6 @@ function meterLevel(value: number) {
 }
 
 export default async function DashboardPage() {
-  const session = await requireAdmin();
-
   const stats = await getDashboardStats();
 
   const statValues = {
