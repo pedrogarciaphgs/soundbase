@@ -70,3 +70,33 @@ export async function getPublicArtistById(id: string) {
 
   return artist;
 }
+export async function getPublicAlbums() {
+  const albums = await prisma.album.findMany({
+    include: {
+      artist: true,
+      songs: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return albums;
+}
+export async function getPublicAlbumById(id: string) {
+  const album = await prisma.album.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      artist: true,
+      songs: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+
+  return album;
+}

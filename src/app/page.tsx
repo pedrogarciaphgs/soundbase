@@ -34,7 +34,12 @@ export default async function HomePage() {
             >
               Ver artistas
             </Link>
-
+            <Link
+              href="/albums"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              Ver álbuns
+            </Link>
             <Link
               href="/dashboard"
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
