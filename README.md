@@ -19,8 +19,11 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 
 ## Funcionalidades
 
+### Backoffice
+
 - Login com NextAuth Credentials
 - Proteção de rotas administrativas por role `ADMIN`
+- Proteção das Server Actions por role `ADMIN`
 - Dashboard com estatísticas
 - CRUD de artistas
 - CRUD de álbuns
@@ -31,6 +34,18 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 - Validação de formulários com Zod
 - Feedback visual com toast
 - Seed de usuário admin e dados demo
+
+### Interface pública
+
+- Home pública com últimas músicas cadastradas
+- Listagem pública de artistas
+- Página pública de detalhes do artista
+- Listagem pública de álbuns
+- Página pública de detalhes do álbum
+- Página pública de detalhes da música
+- Player de áudio reutilizado na interface pública
+- Busca por músicas, álbuns e artistas
+- Navegação pública com links para Início, Artistas, Álbuns e Backoffice
 
 ## Screenshots
 
@@ -193,6 +208,18 @@ Rotas principais:
 /dashboard/artists
 /dashboard/albums
 /dashboard/songs
+```
+
+Rotas Públicas:
+
+```txt
+/
+/artists
+/artists/[id]
+/albums
+/albums/[id]
+/songs/[id]
+/search?q=termo
 ```
 
 ### 7. Abrir o Prisma Studio
