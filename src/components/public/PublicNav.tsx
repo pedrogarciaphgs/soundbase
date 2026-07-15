@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 export function PublicNav() {
   const router = useRouter();
+  const pathname = usePathname();
   const [query, setQuery] = useState("");
 
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
@@ -20,14 +22,34 @@ export function PublicNav() {
 
     router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
   }
-
+  const navItems = [
+    {
+      href: "/",
+      label: "Início",
+    },
+    {
+      href: "/artists",
+      label: "Artistas",
+    },
+    {
+      href: "/albums",
+      label: "Álbuns",
+    },
+  ];
   return (
     <header className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-      <Link
-        href="/"
-        className="text-lg font-bold tracking-tight text-slate-900"
-      >
-        SoundBase
+      <Link href="/" className="flex items-center gap-2">
+        <Image
+          src="/soundbase-icon.png"
+          alt="SoundBase"
+          width={28}
+          height={28}
+          className="rounded-md"
+        />
+
+        <span className="text-lg font-bold tracking-tight text-slate-900">
+          SoundBase
+        </span>
       </Link>
 
       <form onSubmit={handleSearch} className="w-full lg:max-w-sm">
@@ -64,26 +86,23 @@ export function PublicNav() {
       </form>
 
       <nav className="flex items-center gap-3">
-        <Link
-          href="/"
-          className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-        >
-          Início
-        </Link>
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
 
-        <Link
-          href="/artists"
-          className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-        >
-          Artistas
-        </Link>
-
-        <Link
-          href="/albums"
-          className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-        >
-          Álbuns
-        </Link>
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-sm font-medium transition ${
+                isActive
+                  ? "text-slate-900"
+                  : "text-slate-500 hover:text-slate-900"
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
 
         <Link
           href="/dashboard"
