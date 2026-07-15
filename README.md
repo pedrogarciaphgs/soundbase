@@ -49,6 +49,14 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 
 ## Screenshots
 
+### Home pública
+
+![Home pública](docs/screenshots/home.png)
+
+### Busca
+
+![Busca](docs/screenshots/search.png)
+
 ### Login
 
 ![Login](docs/screenshots/login.png)
@@ -57,17 +65,29 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 
 ![Dashboard](docs/screenshots/dashboard.png)
 
-### Artistas
+### Backoffice - Artistas
 
-![Artistas](docs/screenshots/artists.png)
+![Backoffice - Artistas](docs/screenshots/artists.png)
 
-### Álbuns
+### Backoffice - Álbuns
 
-![Álbuns](docs/screenshots/albums.png)
+![Backoffice - Álbuns](docs/screenshots/albums.png)
 
-### Músicas
+### Backoffice - Músicas
 
-![Músicas](docs/screenshots/songs.png)
+![Backoffice - Músicas](docs/screenshots/songs.png)
+
+### Interface pública - Artistas
+
+![Interface pública - Artistas](docs/screenshots/public-artists.png)
+
+### Interface pública - Álbuns
+
+![Interface pública - Álbuns](docs/screenshots/public-albums.png)
+
+### Interface pública - Músicas
+
+![Interface pública - Músicas](docs/screenshots/public-songs.png)
 
 ## Estrutura principal
 
@@ -108,7 +128,7 @@ As operações de criação, edição e exclusão são feitas por Server Actions
 ## Decisões técnicas
 
 - O projeto foi estruturado primeiro como um backoffice administrativo, responsável por alimentar e gerenciar os dados musicais.
-- A interface pública/client será desenvolvida posteriormente consumindo os dados cadastrados pelo painel administrativo.
+- A interface pública/client consome os dados cadastrados pelo painel administrativo.
 - As operações administrativas usam Server Actions do Next.js.
 - O acesso ao banco foi isolado em services, mantendo as páginas e actions mais organizadas.
 - A autenticação usa NextAuth com Credentials Provider.
@@ -132,6 +152,20 @@ Validações implementadas:
 - Arquivos salvos com UUID para evitar conflito de nomes
 
 Os uploads são armazenados em `public/uploads`, mas os arquivos enviados não são versionados no Git.
+
+## Deploy
+
+O projeto está preparado para desenvolvimento local com Docker.
+
+Para produção, alguns pontos precisam ser configurados:
+
+- Banco PostgreSQL hospedado externamente
+- Variáveis de ambiente configuradas na plataforma de deploy
+- `NEXTAUTH_URL` apontando para a URL final da aplicação
+- `NEXTAUTH_SECRET` seguro e exclusivo do ambiente de produção
+- Storage externo para uploads de imagens e áudio
+
+Atualmente, os uploads são salvos localmente em `public/uploads`, o que é adequado para desenvolvimento. Em produção, essa camada deve ser substituída por um serviço de storage externo como S3, Cloudinary, R2 ou Vercel Blob.
 
 ## Como executar o projeto
 
@@ -193,6 +227,8 @@ E-mail: garcia.admin@soundbase.com
 Senha: admin123
 ```
 
+> Essas credenciais são apenas para ambiente local de desenvolvimento.
+
 ### 6. Acessar o backoffice
 
 Depois do login, acesse:
@@ -218,6 +254,7 @@ Rotas Públicas:
 /artists/[id]
 /albums
 /albums/[id]
+/songs
 /songs/[id]
 /search?q=termo
 ```
@@ -246,12 +283,9 @@ Projeto em desenvolvimento.
 
 Próximas etapas planejadas:
 
-- Interface pública/client
-- Busca e filtros
-- Página pública de artistas
-- Página pública de álbuns
-- Página pública de músicas
-- Player público
+- Melhorias na interface pública
+- Filtros avançados
+- Storage externo para uploads
 - Deploy
 
 ## Autor
@@ -259,4 +293,4 @@ Próximas etapas planejadas:
 Desenvolvido por Pedro Henrique Garcia.
 
 - GitHub: github.com/pedrogarciaphgs
-- LinkedIn:https://www.linkedin.com/in/pedrogarciaphgs
+- LinkedIn: https://www.linkedin.com/in/pedrogarciaphgs
