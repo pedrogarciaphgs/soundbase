@@ -100,3 +100,54 @@ export async function getPublicAlbumById(id: string) {
 
   return album;
 }
+
+export async function searchPublicSongs(query: string) {
+  const normalizedQuery = query.trim();
+
+  if (!normalizedQuery) {
+    return [];
+  }
+
+  const songs = await prisma.song.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: normalizedQuery,
+            mode: "insensitive",
+          },
+        },
+        {
+          album: {
+            title: {
+              contains: normalizedQuery,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
+          album: {
+            artist: {
+              name: {
+                contains: normalizedQuery,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      album: {
+        include: {
+          artist: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return songs;
+}
