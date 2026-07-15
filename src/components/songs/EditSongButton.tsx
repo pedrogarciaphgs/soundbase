@@ -24,6 +24,9 @@ export function EditSongButton({ song, albums }: EditSongButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const defaultMinutes = Math.floor(song.duration / 60);
+  const defaultSeconds = song.duration % 60;
+
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -112,13 +115,44 @@ export function EditSongButton({ song, albums }: EditSongButtonProps) {
                 >
                   Duração em segundos
                 </label>
-                <input
-                  id={`duration-${song.id}`}
-                  name="duration"
-                  type="number"
-                  defaultValue={song.duration}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label
+                      htmlFor={`minutes-${song.id}`}
+                      className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                    >
+                      Minutos
+                    </label>
+
+                    <input
+                      id={`minutes-${song.id}`}
+                      name="minutes"
+                      type="number"
+                      min={0}
+                      defaultValue={defaultMinutes}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor={`seconds-${song.id}`}
+                      className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-400"
+                    >
+                      Segundos
+                    </label>
+
+                    <input
+                      id={`seconds-${song.id}`}
+                      name="seconds"
+                      type="number"
+                      min={0}
+                      max={59}
+                      defaultValue={defaultSeconds}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-900/5"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>

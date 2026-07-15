@@ -151,3 +151,20 @@ export async function searchPublicSongs(query: string) {
 
   return songs;
 }
+
+export async function getPublicSongs() {
+  const songs = await prisma.song.findMany({
+    include: {
+      album: {
+        include: {
+          artist: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return songs;
+}

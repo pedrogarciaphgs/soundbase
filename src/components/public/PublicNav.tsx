@@ -13,7 +13,7 @@ export function PublicNav() {
   const initialQuery = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initialQuery);
 
-  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+  function handleSearch(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const trimmedQuery = query.trim();
@@ -37,6 +37,10 @@ export function PublicNav() {
     {
       href: "/albums",
       label: "Álbuns",
+    },
+    {
+      href: "/songs",
+      label: "Músicas",
     },
   ];
   return (
