@@ -1,8 +1,14 @@
 # SoundBase
 
-SoundBase é um backoffice musical desenvolvido por Pedro Henrique Garcia com Next.js, Prisma, PostgreSQL, Docker e NextAuth.
+SoundBase é uma aplicação full stack para gerenciamento musical, desenvolvida por Pedro Henrique Garcia com Next.js, Prisma, PostgreSQL, Docker e NextAuth.
 
-O projeto permite gerenciar artistas, álbuns e músicas em um painel administrativo protegido por autenticação e controle de acesso por role.
+O projeto conta com um backoffice administrativo para gerenciar artistas, álbuns e músicas, além de uma interface pública para navegação, busca e reprodução das músicas cadastradas.
+
+## Links
+
+- Repositório: https://github.com/pedrogarciaphgs/soundbase
+- Autor: Pedro Henrique Garcia
+- LinkedIn: https://www.linkedin.com/in/pedrogarciaphgs
 
 ## Tecnologias
 
@@ -89,6 +95,8 @@ O projeto permite gerenciar artistas, álbuns e músicas em um painel administra
 
 ![Interface pública - Músicas](docs/screenshots/public-songs.png)
 
+> As imagens acima mostram o fluxo público e administrativo da aplicação.
+
 ## Estrutura principal
 
 ```txt
@@ -98,11 +106,16 @@ src/
       artists/
       albums/
       songs/
+    artists/
+    albums/
+    songs/
+    search/
   components/
     artists/
     albums/
     songs/
     dashboard/
+    public/
   lib/
   services/
   utils/
@@ -292,5 +305,5 @@ Próximas etapas planejadas:
 
 Desenvolvido por Pedro Henrique Garcia.
 
-- GitHub: github.com/pedrogarciaphgs
+- GitHub: https://github.com/pedrogarciaphgs
 - LinkedIn: https://www.linkedin.com/in/pedrogarciaphgs
