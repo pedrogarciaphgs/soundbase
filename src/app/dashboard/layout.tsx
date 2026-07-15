@@ -1,6 +1,7 @@
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import { LogoutButton } from "@/components/dashboard/LogoutButton";
 import { requireAdmin } from "@/utils/requireAdmin";
+import Link from "next/link";
 
 export default async function DashboardLayout({
   children,
@@ -21,6 +22,13 @@ export default async function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              Ver site
+            </Link>
+
             <div className="text-right">
               <p className="text-sm font-medium text-slate-900">
                 {session.user.name}

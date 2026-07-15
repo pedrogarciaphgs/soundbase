@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z
@@ -74,8 +75,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+    <main className="relative flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-sm">
+        <Link
+          href="/"
+          className=" absolute left-6 top-6 text-sm font-medium text-slate-500 transition hover:text-slate-900"
+        >
+          ← Voltar para o site
+        </Link>
         <div className="mb-6 text-center">
           <Image
             src="/soundbase-icon.png"
