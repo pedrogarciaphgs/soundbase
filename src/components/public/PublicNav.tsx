@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 
 export function PublicNav() {
   const router = useRouter();
   const pathname = usePathname();
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+
+  const initialQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(initialQuery);
 
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,12 +45,12 @@ export function PublicNav() {
         <Image
           src="/soundbase-icon.png"
           alt="SoundBase"
-          width={28}
-          height={28}
+          width={36}
+          height={36}
           className="rounded-md"
         />
 
-        <span className="text-lg font-bold tracking-tight text-slate-900">
+        <span className="text-xl font-bold tracking-tight text-slate-900">
           SoundBase
         </span>
       </Link>
