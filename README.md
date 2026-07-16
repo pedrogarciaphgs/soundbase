@@ -1,11 +1,12 @@
 # SoundBase
 
-SoundBase é uma aplicação full stack para gerenciamento musical, desenvolvida por Pedro Henrique Garcia com Next.js, Prisma, PostgreSQL, Docker e NextAuth.
+SoundBase é uma aplicação full stack para gerenciamento musical, desenvolvida por Pedro Henrique Garcia com Next.js, Prisma, PostgreSQL, Docker, NextAuth, Neon PostgreSQL e Vercel Blob.
 
 O projeto conta com um backoffice administrativo para gerenciar artistas, álbuns e músicas, além de uma interface pública para navegação, busca e reprodução das músicas cadastradas.
 
 ## Links
 
+- Deploy: https://soundbase-nine.vercel.app/
 - Repositório: https://github.com/pedrogarciaphgs/soundbase
 - Autor: Pedro Henrique Garcia
 - LinkedIn: https://www.linkedin.com/in/pedrogarciaphgs
@@ -17,11 +18,14 @@ O projeto conta com um backoffice administrativo para gerenciar artistas, álbun
 - TypeScript
 - Prisma ORM
 - PostgreSQL
+- Neon PostgreSQL
 - Docker
 - NextAuth
 - Tailwind CSS
 - Zod
 - React Hot Toast
+- Vercel
+- Vercel Blob
 
 ## Funcionalidades
 
@@ -34,8 +38,9 @@ O projeto conta com um backoffice administrativo para gerenciar artistas, álbun
 - CRUD de artistas
 - CRUD de álbuns
 - CRUD de músicas
-- Upload local de imagens
-- Upload local de áudio
+- Upload de imagens com Vercel Blob em produção
+- Upload de áudio com Vercel Blob em produção
+- Upload local em ambiente de desenvolvimento
 - Player de áudio no backoffice
 - Validação de formulários com Zod
 - Feedback visual com toast
@@ -48,10 +53,11 @@ O projeto conta com um backoffice administrativo para gerenciar artistas, álbun
 - Página pública de detalhes do artista
 - Listagem pública de álbuns
 - Página pública de detalhes do álbum
+- Listagem pública de músicas
 - Página pública de detalhes da música
 - Player de áudio reutilizado na interface pública
 - Busca por músicas, álbuns e artistas
-- Navegação pública com links para Início, Artistas, Álbuns e Backoffice
+- Navegação pública com links para Início, Artistas, Álbuns, Músicas e Backoffice
 
 ## Screenshots
 
@@ -149,36 +155,38 @@ As operações de criação, edição e exclusão são feitas por Server Actions
 - As Server Actions também validam permissão de administrador antes de criar, editar ou excluir dados.
 - Os formulários usam Zod para validação antes da persistência.
 - Os uploads são armazenados localmente em ambiente de desenvolvimento.
+- Em produção, os uploads são armazenados com Vercel Blob.
 - Os arquivos enviados usam UUID no nome para evitar conflitos.
-- Em produção, a camada de upload pode ser substituída por storage externo como S3, Cloudinary ou R2.
+- As URLs públicas dos arquivos são salvas no banco de dados.
 
 ## Uploads
 
-O projeto possui upload local para imagens e arquivos de áudio.
+O projeto possui upload de imagens e arquivos de áudio pelo backoffice.
 
 Validações implementadas:
 
 - Imagens: PNG, JPG ou JPEG
 - Áudios: MP3, WAV ou OGG
-- Limite de imagem: 5MB
-- Limite de áudio: 20MB
+- Limite de imagem: 4MB em produção
+- Limite de áudio: 4MB em produção
 - Arquivos salvos com UUID para evitar conflito de nomes
 
-Os uploads são armazenados em `public/uploads`, mas os arquivos enviados não são versionados no Git.
+Em ambiente de desenvolvimento, os uploads podem ser salvos localmente em `public/uploads`.
+
+Em produção, os uploads são armazenados com Vercel Blob, e as URLs públicas retornadas pelo storage são persistidas no banco de dados.
 
 ## Deploy
 
-O projeto está preparado para desenvolvimento local com Docker.
+O projeto está publicado na Vercel.
 
-Para produção, alguns pontos precisam ser configurados:
+Para produção, foram configurados:
 
-- Banco PostgreSQL hospedado externamente
+- Deploy da aplicação na Vercel
+- Banco PostgreSQL hospedado no Neon
 - Variáveis de ambiente configuradas na plataforma de deploy
 - `NEXTAUTH_URL` apontando para a URL final da aplicação
 - `NEXTAUTH_SECRET` seguro e exclusivo do ambiente de produção
-- Storage externo para uploads de imagens e áudio
-
-Atualmente, os uploads são salvos localmente em `public/uploads`, o que é adequado para desenvolvimento. Em produção, essa camada deve ser substituída por um serviço de storage externo como S3, Cloudinary, R2 ou Vercel Blob.
+- Storage externo com Vercel Blob para imagens e áudio
 
 Para produção, use o arquivo `.env.production.example` como referência para configurar as variáveis de ambiente na plataforma de deploy.
 
@@ -290,24 +298,26 @@ npx prisma studio
 
 ## Observações
 
-Os arquivos enviados pelo backoffice são armazenados localmente em:
+Em desenvolvimento, os arquivos podem ser armazenados localmente em:
 
 ```txt
 public/uploads
+
 ```
 
 Em produção, essa camada pode ser substituída por um serviço externo de storage como S3, Cloudinary ou R2.
 
 ## Status do projeto
 
-Projeto em desenvolvimento.
+Projeto publicado e funcional.
 
 Próximas etapas planejadas:
 
 - Melhorias na interface pública
 - Filtros avançados
-- Storage externo para uploads
-- Deploy
+- Melhorias de responsividade no backoffice
+- Página de perfil/admin
+- Melhorias no player de áudio
 
 ## Autor
 
