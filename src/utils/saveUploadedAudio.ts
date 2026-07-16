@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
+import { put } from "@vercel/blob";
 import crypto from "crypto";
 import path from "path";
 
@@ -12,6 +12,7 @@ export async function saveUploadedAudio(file: File) {
       audioUrl: undefined,
     };
   }
+
   const maxSizeInBytes = 20 * 1024 * 1024;
 
   if (file.size > maxSizeInBytes) {
@@ -21,6 +22,7 @@ export async function saveUploadedAudio(file: File) {
       audioUrl: undefined,
     };
   }
+
   const allowedExtensions = [".mp3", ".wav", ".ogg"];
   const originalExtension = path.extname(file.name).toLowerCase();
 
@@ -31,6 +33,7 @@ export async function saveUploadedAudio(file: File) {
       audioUrl: undefined,
     };
   }
+
   const extensionByType: Record<string, string> = {
     "audio/mpeg": "mp3",
     "audio/wav": "wav",
@@ -38,27 +41,17 @@ export async function saveUploadedAudio(file: File) {
   };
 
   const extension = extensionByType[file.type];
-  const fileName = `${crypto.randomUUID()}.${extension}`;
+  const fileName = `songs/audio/${crypto.randomUUID()}.${extension}`;
+
   try {
-    const uploadDir = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "songs",
-      "audio"
-    );
-    await mkdir(uploadDir, { recursive: true });
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const filePath = path.join(uploadDir, fileName);
-    await writeFile(filePath, buffer);
+    const blob = await put(fileName, file, {
+      access: "public",
+    });
 
     return {
       success: true,
       message: "Áudio salvo com sucesso",
-      audioUrl: `/uploads/songs/audio/${fileName}`,
+      audioUrl: blob.url,
     };
   } catch {
     return {
