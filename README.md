@@ -180,6 +180,14 @@ Para produção, alguns pontos precisam ser configurados:
 
 Atualmente, os uploads são salvos localmente em `public/uploads`, o que é adequado para desenvolvimento. Em produção, essa camada deve ser substituída por um serviço de storage externo como S3, Cloudinary, R2 ou Vercel Blob.
 
+Para produção, use o arquivo `.env.production.example` como referência para configurar as variáveis de ambiente na plataforma de deploy.
+
+As migrations em produção devem ser aplicadas com:
+
+```bash
+npm run prisma:migrate:deploy
+```
+
 ## Como executar o projeto
 
 ### 1. Clonar o repositório
