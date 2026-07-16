@@ -221,8 +221,6 @@ Copy-Item .env.example .env
 
 Depois edite o `.env` com suas credenciais locais.
 
-> Importante: não commite o arquivo `.env` real. Use apenas o `.env.example` como referência.
-
 ### 3. Subir o projeto com Docker
 
 ```bash
